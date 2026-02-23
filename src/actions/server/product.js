@@ -13,7 +13,7 @@ export const getProducts = async () => {
 };
 
 export const getSingleProduct = async (id) => {
-  if (!id || id.length != 24) {
+  if (id.length != 24) {
     return {};
   }
 
@@ -22,5 +22,5 @@ export const getSingleProduct = async (id) => {
 
   // if (!product) return {};
 
-  return { ...product, _id: product._id.toString() };
+  return { ...product, _id: product._id.toString() } || {};
 };

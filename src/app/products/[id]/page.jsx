@@ -4,10 +4,51 @@ import Image from "next/image";
 import React from "react";
 import { FaCartPlus, FaStar } from "react-icons/fa";
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const product = await getSingleProduct(id);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+  console.log(product);
+
+  return {
+    title: product.title,
+    description: product.description?.slice(0, 160),
+
+    openGraph: {
+      title: product.title,
+      description: product.description?.slice(0, 160),
+      images: [
+        {
+          url: product.image || "https://i.ibb.co.com/MxSZcZs3/image.png",
+          width: 1200,
+          height: 630,
+          alt: product.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: product.description?.slice(0, 160),
+      images: [product.image || "https://i.ibb.co.com/MxSZcZs3/image.png"],
+    },
+  };
+}
+
+
 const ProductDetails = async ({ params }) => {
   const { id } = await params;
 
   const product = await getSingleProduct(id);
+
+  console.log(product);
+  
 
   const {
     title,
@@ -26,8 +67,8 @@ const ProductDetails = async ({ params }) => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div>
         {/* Image */}
+      <div className="rounded-xl overflow-hidden " >
 
         <Image
           src={image}
