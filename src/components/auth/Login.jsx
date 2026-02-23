@@ -1,19 +1,22 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
-
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signIn();
+  };
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-md backdrop-blur-xl  rounded-2xl shadow-2xl p-6">
         <div className="card-body">
           <h2 className="text-3xl font-bold text-center mb-6">Welcome Back</h2>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
               <label className="label">
@@ -21,8 +24,10 @@ const Login = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="Enter your email"
                 className="input mt-1 w-full px-4 py-3 rounded-lg  border  focus:outline-none focus:ring-2 input-bordered "
+                required
               />
             </div>
 
@@ -35,12 +40,14 @@ const Login = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
                   placeholder="Enter your password"
                   className="input input-bordered mt-1 w-full px-4 py-3 rounded-lg  border  focus:outline-none focus:ring-2 pr-10"
+                  required
                 />
 
                 <button
-                  type="button"
+                  type="submit"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-gray-500"
                 >
